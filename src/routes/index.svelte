@@ -1,6 +1,30 @@
-<script>
+<script context="module" lang="ts">
+//scipt everytipe component render , script module only execute once like next.js getinitialprops , fetch data from server before component get data  
+import type {Load} from "@sveltejs/kit";
+//object fetch 
+export const load:Load = async({fetch}) => {
+  const res = await fetch("/todos.json");
+
+  if(res.ok){
+    const todos = await res.json();
+    return{
+     props:{todos}
+    }
+  }
+  //if not 
+  const {message} = await res.json();
+   return {
+      error: new Error(message),
+   }
+}
+</script>
+
+
+<script lang="ts">
 
 import TodoItem from "$lib/todo-item.svelte";
+
+export let todos:Todo[];
 
 const title = "Todo";
 
@@ -44,12 +68,16 @@ const title = "Todo";
 
 <h1>{title}</h1>
 
-<form action=""method="post" class="new" >
+<form action="/todos.json"method="post" class="new" >
   <input type="text" name="text" aria-label="Add a todo" placeholder="+ type to add a todo">
    
 </form>
 
-<TodoItem/>
+
+{#each todos as todo}
+<TodoItem todo={todo}/>
+{/each}
+
 
 </div>
 
