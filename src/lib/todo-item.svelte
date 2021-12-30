@@ -89,8 +89,8 @@
      <input type="text" value="{todo.text}"/>
      <button aria-label=""class="save">Save</button>
  </form>
-
- <form action=""method="">
+<!-- form html method supports post or get, _method=delete is identifying the post as delete api -->
+ <form action="/todos/{todo.uid}.json?_method=delete"method="post">
      <button aria-label="Delte todo" class="delete">Delete</button>
      </form>
 </div>

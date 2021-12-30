@@ -1,6 +1,7 @@
 <script context="module" lang="ts">
 //scipt everytipe component render , script module only execute once like next.js getinitialprops , fetch data from server before component get data  
 import type {Load} from "@sveltejs/kit";
+
 //object fetch 
 export const load:Load = async({fetch}) => {
   const res = await fetch("/todos.json");
