@@ -84,9 +84,9 @@
 
  </form>
  
- <form action=""method="" class="text">
+ <form action="/todos/{todo.uid}.json?_method=patch"method="post" class="text">
   <!-- string "{todo.text}" -->
-     <input type="text" value="{todo.text}"/>
+     <input type="text" value="{todo.text}"name="text"/>
      <button aria-label=""class="save">Save</button>
  </form>
 <!-- form html method supports post or get, _method=delete is identifying the post as delete api -->

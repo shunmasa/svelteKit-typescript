@@ -4,8 +4,9 @@
 import type {Request} from "@sveltejs/kit"
 
 let todos:Todo[] = [];
-
-export const api = (request:Request,todo?:Todo) =>{
+//Todo have to be complete the type request ,key value pair 
+/// wants to Record of string and some Date or boolean but set as unknown
+export const api = (request:Request,data?:Record<string,unknown>) =>{
     let body ={};
     let status = 500;
     // request.query.get("_methode")
@@ -18,8 +19,9 @@ export const api = (request:Request,todo?:Todo) =>{
 
 
     case "POST":
-       todos.push(todo);
-       body= todo;
+        //data as Todo's type request 
+       todos.push(data as Todo);
+       body = data;
        status = 201;
   
     break;
@@ -29,6 +31,14 @@ export const api = (request:Request,todo?:Todo) =>{
     status = 200;
 
     break;
+    case "PATCH"://update
+        todos = todos.map(todo =>{
+           if(todo.uid === request.params.uid){
+           todo.text = data.text as string;
+           }
+           return todo
+       })
+        status = 200;
        default:
         break;
     }
