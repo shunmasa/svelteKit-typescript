@@ -1,6 +1,6 @@
 
 
-image: gitpod/workplace-postgress
+image: gitpod/workspace-postgres
 tasks:
  - init: npm install
    command: |
