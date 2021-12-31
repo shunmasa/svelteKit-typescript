@@ -1,6 +1,7 @@
 <script context="module" lang="ts">
 //scipt everytipe component render , script module only execute once like next.js getinitialprops , fetch data from server before component get data  
 import type {Load} from "@sveltejs/kit";
+import {enhance} from "$lib/actions/form"
 
 //object fetch 
 export const load:Load = async({fetch}) => {
@@ -18,6 +19,8 @@ export const load:Load = async({fetch}) => {
       error: new Error(message),
    }
 }
+
+
 </script>
 
 
@@ -29,6 +32,22 @@ export let todos:Todo[];
 
 const title = "Todo";
 
+
+const processNewTodoResult = async(res:Response,form:HTMLFormElement) =>{
+  const newTodo = await res.json();
+  // todos.push(newTodo) reassign todos
+  todos = [...todos,newTodo];
+  form.reset();
+}
+
+
+const processUpdatedTodoResult = async(res:Response)=>{
+  const updatedTodo = await res.json();
+  todos = todos.map(t => {
+    if(t.uid === updatedTodo.uid) return updatedTodo;
+    return t;
+  })
+}
 </script>
 
 <style>
@@ -68,15 +87,25 @@ const title = "Todo";
 <div class="todos">
 
 <h1>{title}</h1>
-
-<form action="/todos.json"method="post" class="new" >
+<!-- use , enhance action for form -->
+<!-- function use enhance and object parameter as {{}} -->
+<form action="/todos.json"method="post" class="new" use:enhance={{
+  result:processNewTodoResult
+}}>
   <input type="text" name="text" aria-label="Add a todo" placeholder="+ type to add a todo">
    
 </form>
 
 
 {#each todos as todo}
-<TodoItem todo={todo}/>
+<TodoItem 
+todo={todo} 
+processDeletedTodoResult={()=>{
+  todos = todos.filter(t => t.uid !== todo.uid)
+}}
+{processUpdatedTodoResult}
+
+/>
 {/each}
 
 

@@ -40,12 +40,13 @@ export const api = (request:Request,data?:Record<string,unknown>) =>{
            return todo
        })
         status = 200;
+        body = todos.find(todo => todo.uid === request.params.uid)
        default:
         break;
     }
 
 
-    if(request.method.toUpperCase() !=="GET"){
+    if(request.method.toUpperCase() !=="GET" && request.headers.accept !== "application/json"){
         return{
             status:303,
              headers:{

@@ -1,6 +1,9 @@
 <script lang="ts">
+  import {enhance} from "$lib/actions/form"
   export let todo:Todo;
   // const done = todo.done;
+  export let processDeletedTodoResult:(res:Response) => void
+  export let processUpdatedTodoResult:(res:Response) => void
 </script>
 
 
@@ -80,7 +83,9 @@
 class:done = {todo.done} but if const done = todo.done => only class:done 
 -->
 <div class="todo" class:done = {todo.done}>
- <form action="/todos/{todo.uid}.json?_method=patch" method="post">
+ <form action="/todos/{todo.uid}.json?_method=patch" method="post"use:enhance={{
+  result:processUpdatedTodoResult
+  }}>
      <input type="hidden" name="done" value="{todo.done ? '' : 'true'}" />
      <button aria-label="Mark todo as {todo.done ? 'not done' : 'done'}"class="toggle">Done/NotDone</button>
 
@@ -92,7 +97,9 @@ class:done = {todo.done} but if const done = todo.done => only class:done
      <button aria-label=""class="save">Save</button>
  </form>
 <!-- form html method supports post or get, _method=delete is identifying the post as delete api -->
- <form action="/todos/{todo.uid}.json?_method=delete"method="post">
-     <button aria-label="Delte todo" class="delete">Delete</button>
-     </form>
+ <form action="/todos/{todo.uid}.json?_method=delete"method="post" use:enhance={{
+   result:processDeletedTodoResult
+ }}>
+  <button aria-label="Delte todo" class="delete">Delete</button>
+   </form>
 </div>
