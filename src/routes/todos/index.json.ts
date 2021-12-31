@@ -24,7 +24,7 @@ export const post: RequestHandler<{},FormData> = (request) =>{
     // todos.push(request.body.get("text"));
     //api 2 parameter, request and todo but todo? is optional 
    return api(request, {
-     uid:`${Date.now()}`,//TODO Replace with the UID from database  not the way for production 
+    //  uid:`${Date.now()}`,//database create auto uuid TODO Replace with the UID from database  not the way for production 
     create_at:new Date(),
     text: request.body.get("text"),
     done:false 
